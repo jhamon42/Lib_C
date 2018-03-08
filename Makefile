@@ -6,7 +6,7 @@
 #    By: jhamon <jhamon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/16 16:45:22 by jhamon            #+#    #+#              #
-#    Updated: 2018/03/08 19:17:24 by jhamon           ###   ########.fr        #
+#    Updated: 2018/03/08 20:21:09 by jhamon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,27 +35,32 @@ SRC = 	get_next_line.c	ft_memalloc.c 	ft_memdel.c 	ft_strnew.c 	ft_strdel.c \
 define OK
 	@tput setaf 254
 	@echo -n $1
-	@tput setaf 10
+	@tput bold setaf 10
 	@echo ' 	[Ok]'
 	@tput sgr0
 endef
 
 define FOK
 	@echo ''
-	@tput setaf 44
+	@tput setaf 50
 	@echo -n $(NAME)
-	@tput setaf 10
+	@tput  bold setaf 10
 	@echo ' [Compiled]'
 	@tput sgr0
-	@echo ''
 endef
 
 all : $(NAME)
+	@:
 
 $(NAME) : $(OBJ)
 	@$(CC) -c $(SRC) $(FLAG)
 	@ar -rc $(NAME) $(OBJ)
+ifndef SLEEP
 	$(call FOK, $*)
+endif
+
+silence :
+	@make SLEEP=1
 
 force : $(OBJ)
 	@$(CC) -c $(SRC)
@@ -64,14 +69,27 @@ force : $(OBJ)
 
 %.o: %.c
 	@$(CC) -c $(FLAG) $< -o $@
+ifndef SLEEP
 	$(call OK, $*)
+endif
 
-clean : 
+clean :
 	@rm -rf $(OBJ)
+	@tput setaf 50
+	@echo -n 'Obj'
+	@tput setaf 10
+	@echo ' 	clean success'
+	@tput sgr0
 
 fclean : clean
 	@rm -rf $(NAME)
+	@tput setaf 50
+	@echo -n $(NAME)
+	@tput setaf 10
+	@echo ' clean success'
+	@tput sgr0
 
 re : fclean all
+
 
 .PHONY : all clean fclean re force
