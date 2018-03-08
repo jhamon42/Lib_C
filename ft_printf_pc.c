@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_printf_pc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhamon <jhamon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/18 08:50:20 by jhamon            #+#    #+#             */
-/*   Updated: 2018/03/08 19:12:51 by jhamon           ###   ########.fr       */
+/*   Created: 2018/02/05 07:26:00 by jhamon            #+#    #+#             */
+/*   Updated: 2018/03/08 18:46:19 by jhamon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char			*ft_itoa(int nbr)
+void	ft_printf_pc(t_list *var, int i)
 {
-	char	*nbr_str;
-	int		i;
-
-	if (nbr == -2147483648)
-		return (ft_strdup("-2147483648\0"));
-	i = ft_compt(nbr, 10);
-	if (!(nbr_str = (char *)malloc(i * sizeof(char))))
-		return (NULL);
-	nbr_str[i - 1] = '\0';
-	i -= 2;
-	if (nbr == 0)
-		nbr_str[0] = '0';
-	if (nbr < 0)
+	if (i != 1)
 	{
-		nbr_str[0] = '-';
-		nbr *= -1;
+		if (var->champ > 1)
+		{
+			if (var->moin == 1)
+			{
+				ft_copyinbuff('%', var);
+				while (--var->champ)
+					ft_copyinbuff(' ', var);
+				return ;
+			}
+			else if (var->zero == 1)
+			{
+				while (--var->champ)
+					ft_copyinbuff('0', var);
+				return ((void)ft_copyinbuff('%', var));
+			}
+			while (--var->champ)
+				ft_copyinbuff(' ', var);
+		}
 	}
-	while (nbr >= 1)
-	{
-		nbr_str[i] = (nbr % 10 + '0');
-		nbr /= 10;
-		i--;
-	}
-	return (nbr_str);
+	ft_copyinbuff('%', var);
 }
